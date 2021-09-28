@@ -1,0 +1,9 @@
+<table>
+  <tr *ngFor="let row of rows; index as r">
+    <td
+      *ngFor="let col of rows; index as c"
+      [id]="r + '_' + c"
+      (click)="action($event)"
+    ></td>
+  </tr>
+</table>

@@ -1,4 +1,5 @@
 import {
+  getValidCords,
   isEnoughSpaceArround,
   isNoSpaceBot,
   isNoSpaceLeft,
@@ -54,42 +55,27 @@ export class Ship {
     const [fr, fc] = this.coords[0].split('_').map((s) => Number(s));
     if (this.coords.length === 1) {
       if (isEnoughSpaceArround(fr, fc)) {
-        this.validNextCoords = [
-          fr - 1 + '_' + fc,
-          fr + 1 + '_' + fc,
-          fr + '_' + (fc - 1),
-          fr + '_' + (fc + 1),
-        ];
+        this.validNextCoords = getValidCords('none', fr, fc, 'none');
       } else if (isNoSpaceLeft(fr, fc)) {
-        this.validNextCoords = [
-          fr - 1 + '_' + fc,
-          fr + 1 + '_' + fc,
-          fr + '_' + (fc + 1),
-        ];
+        this.validNextCoords = getValidCords('l', fr, fc, 'none');
       } else if (isNoSpaceRight(fr, fc)) {
-        this.validNextCoords = [
-          fr - 1 + '_' + fc,
-          fr + 1 + '_' + fc,
-          fr + '_' + (fc - 1),
-        ];
+        this.validNextCoords = getValidCords('r', fr, fc, 'none');
       } else if (isNoSpaceTop(fr, fc)) {
-        this.validNextCoords = [
-          fr + 1 + '_' + fc,
-          fr + '_' + (fc - 1),
-          fr + '_' + (fc + 1),
-        ];
+        this.validNextCoords = getValidCords('t', fr, fc, 'none');
       } else if (isNoSpaceBot(fr, fc)) {
-        this.validNextCoords = [
-          fr - 1 + '_' + fc,
-          fr + '_' + (fc - 1),
-          fr + '_' + (fc + 1),
-        ];
+        this.validNextCoords = getValidCords('b', fr, fc, 'none');
       }
       console.log(this.coords[0], this.validNextCoords);
     } else {
       const [lr, lc] = this.coords[this.coords.length - 1]
         .split('_')
         .map((s) => Number(s));
+      const limit: ('l' | 'r' | 't' | 'b')[] =
+        this.orientation === 'h' ? ['r', 'l'] : ['b', 't'];
+      this.validNextCoords = [
+        ...getValidCords(limit[0], fr, fc, this.orientation),
+        ...getValidCords(limit[1], fr, fc, this.orientation),
+      ];
     }
   }
 

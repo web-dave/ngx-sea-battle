@@ -1,5 +1,6 @@
 import {
   getValidCords,
+  hexToDec,
   isEnoughSpaceArround,
   isNoSpaceBot,
   isNoSpaceLeft,
@@ -69,7 +70,7 @@ export class Ship {
     if (this.isReady()) {
       this.validNextCoords = [];
     } else if (this.coords.length === 1) {
-      const [r, c] = this.coords[0].split('_').map((s) => parseInt(s, 16));
+      const [r, c] = this.coords[0].split('_').map((s) => hexToDec(s));
       if (isEnoughSpaceArround(r, c)) {
         this.validNextCoords = getValidCords('none', r, c, 'none');
       } else if (isNoSpaceLeft(r, c)) {
@@ -83,10 +84,10 @@ export class Ship {
       }
     } else {
       const coords = this.coords.sort();
-      const [fr, fc] = coords[0].split('_').map((s) => parseInt(s, 16));
+      const [fr, fc] = coords[0].split('_').map((s) => hexToDec(s));
       const [lr, lc] = coords[this.coords.length - 1]
         .split('_')
-        .map((s) => parseInt(s, 16));
+        .map((s) => hexToDec(s));
       const limit: ('l' | 'r' | 't' | 'b')[] =
         this.orientation === 'h' ? ['r', 'l'] : ['b', 't'];
       this.validNextCoords = [

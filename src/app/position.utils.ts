@@ -1,4 +1,5 @@
 export const decToHex = (i: number) => i.toString(16);
+export const hexToDec = (s: string) => parseInt(s, 16);
 export const isEnoughSpaceArround = (r: number, c: number) => {
   return !isFirstCol(c) && !isFirstRow(r) && !isLastCol(c) && !isLastRow(r);
 };

@@ -1,3 +1,4 @@
+export const decToHex = (i: number) => i.toString(16);
 export const isEnoughSpaceArround = (r: number, c: number) => {
   return !isFirstCol(c) && !isFirstRow(r) && !isLastCol(c) && !isLastRow(r);
 };
@@ -35,39 +36,67 @@ export const getValidCords = (
   if (orientation === 'none') {
     switch (limit) {
       case 'l':
-        return [r - 1 + '_' + c, r + 1 + '_' + c, r + '_' + (c + 1)];
+        return [
+          decToHex(r - 1) + '_' + decToHex(c),
+          decToHex(r + 1) + '_' + decToHex(c),
+          decToHex(r) + '_' + decToHex(c + 1),
+        ];
       case 'r':
-        return [r - 1 + '_' + c, r + 1 + '_' + c, r + '_' + (c - 1)];
+        return [
+          decToHex(r - 1) + '_' + decToHex(c),
+          decToHex(r + 1) + '_' + decToHex(c),
+          decToHex(r) + '_' + decToHex(c - 1),
+        ];
       case 't':
-        return [r + 1 + '_' + c, r + '_' + (c - 1), r + '_' + (c + 1)];
+        return [
+          decToHex(r + 1) + '_' + decToHex(c),
+          decToHex(r) + '_' + decToHex(c - 1),
+          decToHex(r) + '_' + decToHex(c + 1),
+        ];
       case 'b':
-        return [r - 1 + '_' + c, r + '_' + (c - 1), r + '_' + (c + 1)];
+        return [
+          decToHex(r - 1) + '_' + decToHex(c),
+          decToHex(r) + '_' + decToHex(c - 1),
+          decToHex(r) + '_' + decToHex(c + 1),
+        ];
       case 'none':
         return [
-          r - 1 + '_' + c,
-          r + 1 + '_' + c,
-          r + '_' + (c - 1),
-          r + '_' + (c + 1),
+          decToHex(r - 1) + '_' + decToHex(c),
+          decToHex(r + 1) + '_' + decToHex(c),
+          decToHex(r) + '_' + decToHex(c - 1),
+          decToHex(r) + '_' + decToHex(c + 1),
         ];
     }
   } else {
     switch (limit) {
       case 'l':
         return orientation === 'h'
-          ? [r + '_' + (c + 1)]
-          : [r - 1 + '_' + c, r + 1 + '_' + c];
+          ? [decToHex(r) + '_' + decToHex(c + 1)]
+          : [
+              decToHex(r - 1) + '_' + decToHex(c),
+              decToHex(r + 1) + '_' + decToHex(c),
+            ];
       case 'r':
         return orientation === 'h'
-          ? [r + '_' + (c - 1)]
-          : [r - 1 + '_' + c, r + 1 + '_' + c];
+          ? [decToHex(r) + '_' + decToHex(c - 1)]
+          : [
+              decToHex(r - 1) + '_' + decToHex(c),
+              decToHex(r + 1) + '_' + decToHex(c),
+            ];
       case 't':
         return orientation === 'h'
-          ? [r + '_' + (c - 1), r + '_' + (c + 1)]
-          : [r + 1 + '_' + c];
+          ? [
+              decToHex(r) + '_' + decToHex(c - 1),
+              decToHex(r) + '_' + decToHex(c + 1),
+            ]
+          : [decToHex(r + 1) + '_' + decToHex(c)];
       case 'b':
         return orientation === 'h'
-          ? [r + '_' + (c - 1), r + '_' + (c + 1)]
-          : [r - 1 + '_' + c];
+          ? [
+              decToHex(r) + '_' + decToHex(c - 1),
+              decToHex(r) + '_' + decToHex(c + 1),
+            ]
+          : [decToHex(r - 1) + '_' + decToHex(c)];
       case 'none':
         return [];
     }

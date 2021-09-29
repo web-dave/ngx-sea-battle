@@ -23,7 +23,21 @@ export class Ship {
       this.coords.push(tile.id);
       this.setOrientation();
       this.setValidNextCoords();
+      if (this.isReady()) {
+        this.tiles
+          .sort((a, b) => (a.id > b.id ? 1 : -1))
+          .forEach((tile: HTMLTableCellElement, i: number) => {
+            if (i === 0) {
+              tile.classList.add('start_' + this.orientation);
+            } else if (i === this.tiles.length - 1) {
+              tile.classList.add('end_' + this.orientation);
+            } else {
+              tile.classList.add('body_' + this.orientation);
+            }
+          });
+      }
     }
+    // console.log(this.tiles.sort((a, b) => (a.id > b.id ? 1 : -1)));
   }
 
   isHit(id: string) {
@@ -52,31 +66,35 @@ export class Ship {
   }
 
   setValidNextCoords() {
-    const [fr, fc] = this.coords[0].split('_').map((s) => Number(s));
-    if (this.coords.length === 1) {
-      if (isEnoughSpaceArround(fr, fc)) {
-        this.validNextCoords = getValidCords('none', fr, fc, 'none');
-      } else if (isNoSpaceLeft(fr, fc)) {
-        this.validNextCoords = getValidCords('l', fr, fc, 'none');
-      } else if (isNoSpaceRight(fr, fc)) {
-        this.validNextCoords = getValidCords('r', fr, fc, 'none');
-      } else if (isNoSpaceTop(fr, fc)) {
-        this.validNextCoords = getValidCords('t', fr, fc, 'none');
-      } else if (isNoSpaceBot(fr, fc)) {
-        this.validNextCoords = getValidCords('b', fr, fc, 'none');
+    if (this.isReady()) {
+      this.validNextCoords = [];
+    } else if (this.coords.length === 1) {
+      const [r, c] = this.coords[0].split('_').map((s) => parseInt(s, 16));
+      if (isEnoughSpaceArround(r, c)) {
+        this.validNextCoords = getValidCords('none', r, c, 'none');
+      } else if (isNoSpaceLeft(r, c)) {
+        this.validNextCoords = getValidCords('l', r, c, 'none');
+      } else if (isNoSpaceRight(r, c)) {
+        this.validNextCoords = getValidCords('r', r, c, 'none');
+      } else if (isNoSpaceTop(r, c)) {
+        this.validNextCoords = getValidCords('t', r, c, 'none');
+      } else if (isNoSpaceBot(r, c)) {
+        this.validNextCoords = getValidCords('b', r, c, 'none');
       }
-      console.log(this.coords[0], this.validNextCoords);
     } else {
-      const [lr, lc] = this.coords[this.coords.length - 1]
+      const coords = this.coords.sort();
+      const [fr, fc] = coords[0].split('_').map((s) => parseInt(s, 16));
+      const [lr, lc] = coords[this.coords.length - 1]
         .split('_')
-        .map((s) => Number(s));
+        .map((s) => parseInt(s, 16));
       const limit: ('l' | 'r' | 't' | 'b')[] =
         this.orientation === 'h' ? ['r', 'l'] : ['b', 't'];
       this.validNextCoords = [
         ...getValidCords(limit[0], fr, fc, this.orientation),
-        ...getValidCords(limit[1], fr, fc, this.orientation),
+        ...getValidCords(limit[1], lr, lc, this.orientation),
       ];
     }
+    // console.log(this.validNextCoords);
   }
 
   setOrientation() {

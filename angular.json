@@ -74,7 +74,8 @@
               "browserTarget": "ngx-sea-battle:build:production"
             },
             "development": {
-              "browserTarget": "ngx-sea-battle:build:development"
+              "browserTarget": "ngx-sea-battle:build:development",
+              "port": 4242
             }
           },
           "defaultConfiguration": "development"
